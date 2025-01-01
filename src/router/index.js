@@ -17,6 +17,12 @@ const routes = [
   },
 
   {
+    path: '/add_menu_and_categories',
+    name: 'AddMenuAndCategories',
+    component: () => import('../views/private/admin/AddMenuAndCategories.vue')
+  },
+
+  {
     path: "/orders",
     name: "Orders",
     component: () => import("../views/private/cashier/Orders.vue"),
