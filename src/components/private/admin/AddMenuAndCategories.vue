@@ -75,7 +75,7 @@
         <v-col cols="12" md="6">
         
             <section
-                class="mt-2 main-container"
+                class=" main-container"
                 @dragover.prevent
                 @drop.prevent="handleDrop"
             >
@@ -94,7 +94,7 @@
                             <v-icon class="ml-md-n16 mr-3" color="secondary" size="38"
                             >mdi-cloud-upload</v-icon
                             >
-                            Drop CSV File Here
+                            Drop Menu Image Here
                         </span>
 
                         <input
