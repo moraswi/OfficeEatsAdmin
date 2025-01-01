@@ -1,6 +1,6 @@
 <template>
     <div class="px-md-4">
-      <TheHeader title="Announcements"></TheHeader>
+      <TheHeader></TheHeader>
 
       <v-layout class="mt-5">
         <v-btn
@@ -31,6 +31,7 @@
                         <div class="d-flex flex-column justify-center ml-2">
                             <h2>Streetwise</h2>
                             <label class="mt-n1">description</label>
+                            <label class="mt-n1">R 40.00</label>
                         </div>
                         <v-spacer></v-spacer>
                         <v-icon

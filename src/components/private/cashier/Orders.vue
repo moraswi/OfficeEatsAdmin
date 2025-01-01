@@ -1,6 +1,6 @@
 <template>
     <div class="px-md-4">
-      <!-- <TheHeader title="Announcements"></TheHeader> -->
+      <TheHeader></TheHeader>
 
 
       <v-row class="mt-5">

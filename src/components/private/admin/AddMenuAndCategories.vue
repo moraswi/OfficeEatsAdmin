@@ -18,26 +18,22 @@
         <v-tab-item v-model="one">
             <v-text-field
             v-model="categoryName"
-            class="mt-md-10 mt-3"
+            class="mt-2"
             outlined
             label="Category Name"
             variant="outlined"
           ></v-text-field>
           <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
-  
         </v-tab-item>
 
         <!-- menuItemName -->
-        <v-tab-item v-model="two">
-
-            <v-row>
-                <v-col cols="12" md="6">
-       
+        <v-tab-item v-model="two">       
         <!-- Categories -->
             <v-select
             :items="items"
             label="Categories"
             outlined
+            class="mt-2"
             ></v-select>
 
         <!-- menuItemName -->
@@ -69,16 +65,23 @@
             variant="outlined"
           ></v-text-field>
           <!-- Submit -->
-          <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit Menu</v-btn>
-        </v-col>
+          <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
+        </v-tab-item>
 
-        <v-col cols="12" md="6">
-        
-            <section
+            <v-tab-item v-model="three">  
+
+                <v-select
+                :items="items"
+                label="Menu"
+                outlined
+                class="mt-2"
+                ></v-select>
+
+                <section
                 class=" main-container"
                 @dragover.prevent
                 @drop.prevent="handleDrop"
-            >
+                >
                 <div fluid align="center" justify="center">
                 <div
                     :class="['dropZone', dragging ? 'dropZone-over' : '']"
@@ -109,28 +112,20 @@
                 </div>
             </section>
 
-           <!-- uploaded file name -->
-           <ul class="mt-5">
-                <li v-for="(file, index) in files" :key="index">
-                {{ file.file.name }}
-                <v-icon color="red" @click="removeFile(index)"
-                    >mdi-window-close</v-icon
-                >
-                </li>
-            </ul>
+                <!-- uploaded file name -->
+                <ul class="mt-5">
+                        <li v-for="(file, index) in files" :key="index">
+                        {{ file.file.name }}
+                        <v-icon color="red" @click="removeFile(index)"
+                            >mdi-window-close</v-icon
+                        >
+                        </li>
+                    </ul>
 
-      <!-- <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit Image</v-btn> -->
-
-        </v-col>
-    </v-row>
-        </v-tab-item>
-
-        <v-tab-item v-model="three">
-          Three
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card-text>
-  
+                <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
+            </v-tab-item>
+            </v-tabs-items>
+        </v-card-text>
   
       <v-overlay :value="overlay" z-index="1000">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -142,7 +137,7 @@
   import TheHeader from "@/components/shared/TheHeader.vue";
   
   export default {
-    name: "AddMenuAnCategoriesPage",
+    name: "AddMenuAndCategoriesPage",
   
     components: {
       TheHeader,

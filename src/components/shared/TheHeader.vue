@@ -1,7 +1,16 @@
 <template>
   <div>
-    <v-card class="main-card py-5 px-2 hidden-sm-and-down">
-      <h1 class="font-h3" :style="{ color: '#20505d' }">Header</h1>
+    <v-card class="main-card py-5 px-2 mt-5 hidden-sm-and-down">
+     <v-layout>
+      <h2>Office Eats</h2>
+      <v-spacer></v-spacer>
+      <v-btn :to="{ name: 'Orders' }" class="ml-5" rounded depressed>Home</v-btn>
+      <v-btn :to="{ name: 'AddMenuAndCategories' }" class="ml-5" rounded depressed>Add Items</v-btn>
+      <v-btn :to="{ name: 'MenuAndCategories' }" class="ml-5" rounded depressed>Menu</v-btn>
+      <v-btn :to="{ name: 'AdminOrders' }" class="ml-5" rounded depressed>Manage Orders</v-btn>
+      <v-btn :to="{ name: 'home' }" class="ml-5 red white--text" rounded depressed>Log Out</v-btn>
+
+    </v-layout>
     </v-card>
   </div>
 </template>

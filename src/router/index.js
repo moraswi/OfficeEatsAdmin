@@ -23,6 +23,12 @@ const routes = [
   },
 
   {
+    path: "/admin_orders",
+    name: "AdminOrders",
+    component: () => import("../views/private/admin/AdminOrders.vue"),
+  },
+
+  {
     path: "/orders",
     name: "Orders",
     component: () => import("../views/private/cashier/Orders.vue"),
