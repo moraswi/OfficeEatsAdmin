@@ -3,7 +3,7 @@ import store from "@/store";
 // const apiKey = "bdK/XxbJ9ZwWMAF4gwKnIA9rpD8XE6Q4LxF2TjjfHuo=";
 
 const httpService = axios.create({
-  baseURL: "https://localhost:7141/api/",
+  baseURL: "https://localhost:7067/api/",
   headers: {
     "Content-Type": "application/json",
     // ApiKey: apiKey,

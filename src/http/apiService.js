@@ -1,6 +1,6 @@
 import httpService from "./httpService";
 
-apiService = {
+const apiService = {
 
     // logIn
     logIn(data) {
@@ -57,3 +57,5 @@ apiService = {
         return httpService.get(`order-statistics/${storeid}`, data);
     },
 }
+
+export default apiService;

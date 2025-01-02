@@ -56,11 +56,12 @@ import router from "@/router";
 
       methods: {
         // logIn
-        async logIn() {
+        async logInOld() {
             router.push({ name: "MenuAndCategories" });
         },
 
-        async logInOld() {
+        // logIn
+        async logIn() {
           try {
         this.overlay = true;
 
@@ -69,13 +70,13 @@ import router from "@/router";
               password: this.password,
             }
             
-            if(this.email == "admin@alliance.com" && this.password == "Alliance@123" ){
-                  const response = await this.$store.dispatch('dataModules/logIn',data);
-                if(response.status == 200){
+            const response = await this.$store.dispatch('authentication/logInReq',data);
 
-                    // if(data.email == "admin@alliance.com" && data.password == "Alliance@123"){
-                        router.push({ name: "Feedback" });
-                                  this.$swal({
+            if(response.status == 200){
+
+                    router.push({ name: "Orders" });
+                        
+                        this.$swal({
                           toast: true,
                           position: "top-end",
                           icon: "success",
@@ -84,27 +85,24 @@ import router from "@/router";
                           timer: 3000,
                           timerProgressBar: true,
                         });
-                    // }
-              this.overlay = false;
-          
-                        }
-                      }else{
-                            this.$swal({
-                            toast: true,
-                            position: "top-end",
-                            icon: "error",
-                            title: "Wrong Credentials!",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                          });
-                      }
-
-              this.overlay = false;
+                    
+            }else{
+                this.$swal({
+                  toast: true,
+                  position: "top-end",
+                  icon: "error",
+                  title: "enter correct details",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+              });
+            }
                         
           } catch (error) {
-            this.overlay = false;
             console.log("logIn: ",error)
+          }finally{
+            this.overlay = false;
+
           }
         }
       },
