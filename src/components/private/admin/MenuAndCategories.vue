@@ -2,26 +2,19 @@
     <div class="px-md-4">
       <TheHeader></TheHeader>
 
-      <v-layout class="mt-5">
+      <div class="d-flex mt-5" >
         <v-btn
+          v-for="category in categories"
+            :key="category.id"
             rounded
+            class="ml-2"
             color="red"
             dark
             depressed
             >
-            Box Meal
+            {{ category.name }}
             </v-btn>
-
-            <v-btn
-            rounded
-            color="red"
-            dark
-            depressed
-            class="ml-3"
-            >
-            Drinks
-            </v-btn>
-      </v-layout>
+      </div>
 
       <v-row class="mt-5">
         <v-col cols="12" md="4">
@@ -53,6 +46,7 @@
   
   <script>
   import TheHeader from "@/components/shared/TheHeader.vue";
+  import apiService from '@/http/apiService';
   
   export default {
     name: "MenuAnCategoriesPage",
@@ -63,11 +57,13 @@
   
     data: () => ({
       overlay: false,
+      storeId: 0,
+      categories:[],
     }),
   
     async created() {
       await Promise.all([
-  
+        this.fetchMenuCategory()
       ])
         .then(() => {
           this.overlay = false;
@@ -81,6 +77,19 @@
     },
   
     methods: {
+          // fetchMenuCategory
+          async fetchMenuCategory() {
+            try {
+              this.overlay = true;
+
+              const response = await apiService.getMenuCategory(this.storeId);
+              this.categories = response.data;
+            } catch (error) {
+              console.error('Error fetching store orders:', error);
+            } finally {
+              this.overlay = false;
+            }
+          },
     },
   };
   </script>

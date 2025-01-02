@@ -33,8 +33,8 @@ const apiService = {
     },
 
     // getMenuCategory
-    getMenuCategory(data) {
-        return httpService.get(`menu-category/${storeid}`, data);
+    getMenuCategory(storeid) {
+        return httpService.get(`menu-category/${storeid}`);
     },
 
     // getStoreOrder
