@@ -8,301 +8,16 @@
           <v-card height="620" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
 
             <v-row>
-                <v-col cols="12" md="3">
+                <v-col v-for="order in orders" :key="order.id" cols="12" md="3">
                     <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
+                        <h2>{{order.orderCode}}</h2>
+                        <h4>R {{ order.totalAmount }}</h4>
+                        <p class="orange--text">{{order.orderStatus}}</p>
                     </v-card>
                     
                 </v-col>
 
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
 
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>  
-                </v-col>
-
-                <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
-
-                 <v-col cols="12" md="3">
-                    <v-card height="87" class=" pa-1">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-                </v-col>
             </v-row>
 
             </v-card>
@@ -374,7 +89,8 @@
   
   <script>
   import TheHeader from "@/components/shared/TheHeader.vue";
-  
+  import apiService from '@/http/apiService';
+
   export default {
     name: "OrdersPage",
   
@@ -384,24 +100,31 @@
   
     data: () => ({
       overlay: false,
+      orders: [],
+
+      storeId: 1,
     }),
   
     async created() {
-      await Promise.all([
-  
-      ])
-        .then(() => {
-          this.overlay = false;
-        })
-        .catch(() => {
-          this.overlay = false;
-        });
+      this.fetchOrders();
     },
   
     computed: {
     },
+
   
     methods: {
+      // fetchOrders
+      async fetchOrders() {
+      try {
+        const response = await apiService.getStoreOrder(this.storeId);
+        this.orders = response.data;
+      } catch (error) {
+        console.error('Error fetching store orders:', error);
+      } finally {
+        this.overlay = false;
+      }
+    },
     },
   };
   </script>

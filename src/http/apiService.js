@@ -38,8 +38,8 @@ const apiService = {
     },
 
     // getStoreOrder
-    getStoreOrder(data) {
-        return httpService.get(`order/store/${storeid}`, data);
+    getStoreOrder(storeId) {
+        return httpService.get(`order/store/${storeId}`);
     },
 
     // getStoreMenuByCategory
