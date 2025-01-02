@@ -42,6 +42,11 @@ const apiService = {
         return httpService.get(`order/store/${storeId}`);
     },
 
+    // getStoreOrderById
+    getStoreOrderById(orderId) {
+        return httpService.get(`order/${orderId}`);
+    },
+
     // getStoreMenuByCategory
     getStoreMenuByCategory(data) {
         return httpService.get(`store-menu/category/${categoryid}`, data);
@@ -55,6 +60,11 @@ const apiService = {
     // getStoreMenuByCategory
     getStoreMenuByCategory(data) {
         return httpService.get(`order-statistics/${storeid}`, data);
+    },
+
+    // updateOrder
+    updateOrder(data) {
+        return httpService.put(`order`,data);
     },
 }
 
