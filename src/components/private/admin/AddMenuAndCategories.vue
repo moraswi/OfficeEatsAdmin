@@ -152,6 +152,7 @@
       overlay: false,
       menuItemName:"",
       menuDescription:"",
+      categoryName:"",
       menuPrice: 0,
       categoryId:0,
       storeId:0,
@@ -196,7 +197,7 @@
         const file = files[0];
         this.files = [{ file: file }];
       }
-      event.target.value = ""; // clear the input
+      event.target.value = "";
     },
 
     // upload document
@@ -213,14 +214,6 @@
       try {
         this.overlay = true;
 
-        const formData = new FormData();
-        formData.append("csvupload", this.files[0].file);
-
-        // Hardcoding the GUID for now
-        // const hardcodedId = "6o9164c0-9fbb-42e2-af3a-485136d99785";
-        const randomId = crypto.randomUUID();
-        formData.append("id", randomId);
-        console.log(randomId);
         const response = await this.$store.dispatch(
           "jobs/uploadMicroblinkCSVReq",
           formData
@@ -269,8 +262,8 @@
         this.overlay = true;
 
         const data = {
-          name: "string",
-          storeId: 0
+          name: this.categoryName,
+          storeId: this.storeId,
         };
 
         const response = await apiService.addMenuCategory(data);
