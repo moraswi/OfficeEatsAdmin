@@ -15,6 +15,8 @@
 
     <v-card-text>
       <v-tabs-items v-model="tab">
+
+        <!-- category name -->
         <v-tab-item v-model="one">
             <v-text-field
             v-model="categoryName"
@@ -23,10 +25,10 @@
             label="Category Name"
             variant="outlined"
           ></v-text-field>
-          <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
+          <v-btn width="100%" class="py-6 white--text" color="red" @click="addMenuCategory">Submit</v-btn>
         </v-tab-item>
 
-        <!-- menuItemName -->
+        <!-- menu Item Name -->
         <v-tab-item v-model="two">       
         <!-- Categories -->
             <v-select
@@ -65,9 +67,10 @@
             variant="outlined"
           ></v-text-field>
           <!-- Submit -->
-          <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
+          <v-btn width="100%" class="py-6 white--text" color="red" @click="addStoreMenu">Submit</v-btn>
         </v-tab-item>
 
+        <!-- menu item category -->
             <v-tab-item v-model="three">  
 
                 <v-select
@@ -124,6 +127,7 @@
 
                 <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
             </v-tab-item>
+
             </v-tabs-items>
         </v-card-text>
   
@@ -135,6 +139,7 @@
   
   <script>
   import TheHeader from "@/components/shared/TheHeader.vue";
+  import apiService from '@/http/apiService';
   
   export default {
     name: "AddMenuAndCategoriesPage",
@@ -145,6 +150,11 @@
   
     data: () => ({
       overlay: false,
+      menuItemName:"",
+      menuDescription:"",
+      menuPrice: 0,
+      categoryId:0,
+      storeId:0,
       tab: null,
       dragging: false,
       files: [],
@@ -252,6 +262,77 @@
         this.overlay = false;
       }
     },
+
+    // addMenuCategory
+    async addMenuCategory() {
+      try {
+        this.overlay = true;
+
+        const data = {
+          name: "string",
+          storeId: 0
+        };
+
+        const response = await apiService.addMenuCategory(data);
+        
+        if(response.status == 200){
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: "Successfully added category",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+
+      }
+      
+      } catch (error) {
+        console.error('Error fetching store category:', error);
+      } finally {
+        this.overlay = false;
+      }
+    },
+
+    // addStoreMenu
+    async addStoreMenu() {
+      try {
+        this.overlay = true;
+
+        const data = {
+          name: this.menuItemName,
+          categoryId: this.categoryId,
+          storeId: this.storeId,
+          price: this.menuPrice,
+          promotion: false,
+          topMeal: false,
+          description: this.menuDescription
+        };
+
+        const response = await apiService.addStoreMenu(data);
+        
+        if(response.status == 200){
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: "Successfully added menu",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+
+      }
+      
+      } catch (error) {
+        console.error('Error fetching store category:', error);
+      } finally {
+        this.overlay = false;
+      }
+    },
+
+
     },
   };
   </script>
