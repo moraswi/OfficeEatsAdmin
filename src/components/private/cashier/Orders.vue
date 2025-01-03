@@ -215,15 +215,15 @@
           this.orderDetails.orderStatus = this.orderStatus;
           this.fetchOrders()
       
-        this.$swal({
-          toast: true,
-          position: "top-end",
-          icon: "success",
-          title: "Successfully updated",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
+        // this.$swal({
+        //   toast: true,
+        //   position: "top-end",
+        //   icon: "success",
+        //   title: "Successfully updated",
+        //   showConfirmButton: false,
+        //   timer: 3000,
+        //   timerProgressBar: true,
+        // });
 
       }
         
