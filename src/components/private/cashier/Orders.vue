@@ -26,21 +26,22 @@
         <v-col col="12" md="3">
           <v-card height="620" class="pa-2 d-flex flex-column scrollable-card" style="overflow: hidden;">
 
-            <div>
-              <v-spacer></v-spacer> <v-btn @click="updateOrders" class="red white--text" depressed>decline</v-btn>
-            </div>
-            <div style="overflow-y: auto; flex: 1;">
+        <div v-if="orderDetails.items" class="mb-1">
+            <v-spacer></v-spacer> <v-btn @click="updateOrders('Decline')" class="red white--text" depressed>decline</v-btn>
+        </div>
+            <div v-if="orderDetails.items" style="overflow-y: auto; flex: 1;">
+            
               <!-- order items -->
-              <div v-for="orderItems in orderDetails.items" :key="orderItems.id">
+            <div v-for="orderItems in orderDetails.items" :key="orderItems.id">
               <h2>{{ orderItems.foodName }}</h2>
               <div class="d-flex justify-space-between">
                   <label><strong>Price:</strong></label>
                   <span>R {{ orderItems.totalPrice }}</span>
-                </div>
-                <div class="d-flex justify-space-between">
+              </div>
+              <div class="d-flex justify-space-between">
                   <label><strong>Quantity:</strong></label>
                   <span>{{ orderItems.quantity }}</span>
-                </div>
+              </div>
 
           <hr class="mb-3 mt-1">
         </div>
@@ -76,10 +77,23 @@
 
         </div>
 
-        <div>
-          <v-btn @click="updateOrders" class="orange white--text mt-5" block>
+        <div v-if="orderDetails.items">
+            <!-- v-if="nextStatus" -->
+          <v-btn
+            :disabled="overlay"
+            @click="updateOrders(orderDetails.orderStatus)"
+            :class="`${getButtonColor()} white--text mt-1`"
+            block
+          >
+            {{ nextStatus }}
+          </v-btn>
+          <!-- <v-btn v-if="orderDetails.orderStatus == 'Pending'" @click="updateOrders(orderDetails.orderStatus)" class="orange white--text mt-1" block>
             Accept
           </v-btn>
+
+          <v-btn v-if="orderDetails.orderStatus == 'Accepted'" @click="updateOrders(orderDetails.orderStatus)" class="green white--text mt-1" block>
+            Complete
+          </v-btn> -->
         </div>
       </v-card>
 
@@ -107,7 +121,7 @@
       overlay: false,
       orders: [],
       orderDetails: {},
-
+      orderStatus: "",
       storeId: 1,
     }),
   
@@ -116,6 +130,13 @@
     },
   
     computed: {
+      nextStatus() {
+        const statusMapping = {
+          Pending: "Accept",
+          Accepted: "Complete",
+        };
+        return statusMapping[this.orderDetails.orderStatus] || null;
+      },
     },
 
   
@@ -148,15 +169,27 @@
         this.overlay = false;
       }
     },
-
-    
+   
     // updateOrders
-    async updateOrders() {
+    async updateOrders(currentStatus) {
       try {
         this.overlay = true;
+        
+        // if(status == "Pending"){
+        //   this.orderStatus = "Accepted"
+        // }else if(status == "Accepted"){
+        //   this.orderStatus = "Completed"
+        // }else if(status == "Decline"){
+        //   this.orderStatus == "Declined"
+        // }
 
-        console.log('here')
-        console.log(this.orderDetails.id);
+        const statusMapping = {
+          Pending: "Accepted",
+          Accepted: "Completed",
+          Decline: "Declined",
+        };
+
+        this.orderStatus = statusMapping[currentStatus] || currentStatus;
 
         const data = {
                 id: this.orderDetails.id, // Order ID
@@ -168,10 +201,17 @@
                   itemPrice: item.itemPrice,
                   foodName: item.foodName,
                 })), // Map items array
+                // items: this.orderDetails.items.map((item, index) => ({
+                //   id: item.id,
+                //   foodId: item.foodId,
+                //   quantity: item.quantity,
+                //   itemPrice: item.itemPrice,
+                //   foodName: `${item.foodName} (item ${index})`, // Add an identifier
+                // })),
                 totalAmount: this.orderDetails.totalAmount, // Total amount
                 deliveryAddress: this.orderDetails.deliveryAddress, // Delivery address
                 paymentMethod: this.orderDetails.paymentMethod, // Payment method
-                orderStatus: this.orderDetails.orderStatus, // Order status
+                orderStatus: this.orderStatus, // Order status
                 orderDate: this.orderDetails.orderDate, // Order date
                 shopId: this.orderDetails.shopId, // Shop ID
                 orderCode: this.orderDetails.orderCode, // Order code
@@ -180,6 +220,8 @@
               };
 
         const response = await apiService.updateOrder(data);
+
+        this.orderDetails.orderStatus = this.orderStatus;
 
         if(response.status == 200){
     
@@ -201,6 +243,14 @@
         this.overlay = false;
       }
     },
+
+    getButtonColor() {
+        const colorMapping = {
+          Accept: "orange",
+          Complete: "green",
+        };
+        return colorMapping[this.nextStatus] || "red";
+      },
 
     },
   };
