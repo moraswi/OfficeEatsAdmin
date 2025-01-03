@@ -13,13 +13,9 @@
                         <h2>{{order.orderCode}}</h2>
                         <h4>R {{ order.totalAmount }}</h4>
                         <p class="orange--text">{{order.orderStatus}}</p>
-                    </v-card>
-                    
+                    </v-card>    
                 </v-col>
-
-
-            </v-row>
-
+              </v-row>
             </v-card>
         </v-col>
 
@@ -27,7 +23,13 @@
           <v-card height="620" class="pa-2 d-flex flex-column scrollable-card" style="overflow: hidden;">
 
         <div v-if="orderDetails.items" class="mb-1">
-            <v-spacer></v-spacer> <v-btn @click="updateOrders('Decline')" class="red white--text" depressed>decline</v-btn>
+            <v-spacer></v-spacer> 
+            <v-btn
+              v-if="nextStatus"
+              @click="updateOrders('Decline')" 
+              class="red white--text" 
+              depressed>decline
+          </v-btn>
         </div>
             <div v-if="orderDetails.items" style="overflow-y: auto; flex: 1;">
             
@@ -78,8 +80,8 @@
         </div>
 
         <div v-if="orderDetails.items">
-            <!-- v-if="nextStatus" -->
           <v-btn
+            v-if="nextStatus"
             :disabled="overlay"
             @click="updateOrders(orderDetails.orderStatus)"
             :class="`${getButtonColor()} white--text mt-1`"
@@ -210,6 +212,9 @@
 
         if(response.status == 200){
     
+          this.orderDetails.orderStatus = this.orderStatus;
+          this.fetchOrders()
+      
         this.$swal({
           toast: true,
           position: "top-end",
