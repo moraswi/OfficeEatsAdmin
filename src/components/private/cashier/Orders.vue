@@ -87,13 +87,6 @@
           >
             {{ nextStatus }}
           </v-btn>
-          <!-- <v-btn v-if="orderDetails.orderStatus == 'Pending'" @click="updateOrders(orderDetails.orderStatus)" class="orange white--text mt-1" block>
-            Accept
-          </v-btn>
-
-          <v-btn v-if="orderDetails.orderStatus == 'Accepted'" @click="updateOrders(orderDetails.orderStatus)" class="green white--text mt-1" block>
-            Complete
-          </v-btn> -->
         </div>
       </v-card>
 
@@ -175,14 +168,6 @@
       try {
         this.overlay = true;
         
-        // if(status == "Pending"){
-        //   this.orderStatus = "Accepted"
-        // }else if(status == "Accepted"){
-        //   this.orderStatus = "Completed"
-        // }else if(status == "Decline"){
-        //   this.orderStatus == "Declined"
-        // }
-
         const statusMapping = {
           Pending: "Accepted",
           Accepted: "Completed",
@@ -192,15 +177,15 @@
         this.orderStatus = statusMapping[currentStatus] || currentStatus;
 
         const data = {
-                id: this.orderDetails.id, // Order ID
-                userId: this.orderDetails.userId, // User ID
+                id: this.orderDetails.id,
+                userId: this.orderDetails.userId,
                 items: this.orderDetails.items.map(item => ({
                   id: item.id,
                   foodId: item.foodId,
                   quantity: item.quantity,
                   itemPrice: item.itemPrice,
                   foodName: item.foodName,
-                })), // Map items array
+                })),
                 // items: this.orderDetails.items.map((item, index) => ({
                 //   id: item.id,
                 //   foodId: item.foodId,
@@ -208,15 +193,15 @@
                 //   itemPrice: item.itemPrice,
                 //   foodName: `${item.foodName} (item ${index})`, // Add an identifier
                 // })),
-                totalAmount: this.orderDetails.totalAmount, // Total amount
-                deliveryAddress: this.orderDetails.deliveryAddress, // Delivery address
-                paymentMethod: this.orderDetails.paymentMethod, // Payment method
-                orderStatus: this.orderStatus, // Order status
-                orderDate: this.orderDetails.orderDate, // Order date
-                shopId: this.orderDetails.shopId, // Shop ID
-                orderCode: this.orderDetails.orderCode, // Order code
-                storeName: this.orderDetails.storeName, // Store name
-                description: this.orderDetails.description, // Description
+                totalAmount: this.orderDetails.totalAmount,
+                deliveryAddress: this.orderDetails.deliveryAddress,
+                paymentMethod: this.orderDetails.paymentMethod,
+                orderStatus: this.orderStatus,
+                orderDate: this.orderDetails.orderDate,
+                shopId: this.orderDetails.shopId,
+                orderCode: this.orderDetails.orderCode,
+                storeName: this.orderDetails.storeName,
+                description: this.orderDetails.description,
               };
 
         const response = await apiService.updateOrder(data);
@@ -236,7 +221,7 @@
         });
 
       }
-        // this.orderDetails = response.data;
+        
       } catch (error) {
         console.error('Error fetching store orders:', error);
       } finally {
@@ -244,6 +229,7 @@
       }
     },
 
+    // getButtonColor
     getButtonColor() {
         const colorMapping = {
           Accept: "orange",
@@ -258,15 +244,15 @@
   
 <style lang="scss" scoped>
 .image-rounded {
-    border-radius: 5px; /* Makes the image circular */
+    border-radius: 5px;
 }
 
 .scrollable-card {
   overflow-y: auto;
-  scrollbar-width: none; /* For Firefox */
+  scrollbar-width: none;
 }
 
 .scrollable-card::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Edge */
+  display: none;
 }
 </style>
