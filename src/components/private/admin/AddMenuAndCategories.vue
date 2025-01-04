@@ -32,7 +32,9 @@
         <v-tab-item v-model="two">       
         <!-- Categories -->
             <v-select
-            :items="items"
+            :items="categories"
+            item-value="id"
+            item-text="name"
             label="Categories"
             outlined
             class="mt-2"
@@ -153,17 +155,19 @@
       menuItemName:"",
       menuDescription:"",
       categoryName:"",
-      menuPrice: 0,
+      menuPrice: null,
       categoryId:0,
       storeId:0,
       tab: null,
       dragging: false,
       files: [],
       items: ['Drink', 'Box Meal', 'Starters'],
+      categories:[]
     }),
   
     async created() {
       await Promise.all([
+      this.fetchMenuCategory()
   
       ])
         .then(() => {
@@ -325,6 +329,19 @@
       }
     },
 
+          // fetchMenuCategory
+          async fetchMenuCategory() {
+            try {
+              this.overlay = true;
+
+              const response = await apiService.getMenuCategory(this.storeId);
+              this.categories = response.data;
+            } catch (error) {
+              console.error('Error fetching store orders:', error);
+            } finally {
+              this.overlay = false;
+            }
+          },
 
     },
   };

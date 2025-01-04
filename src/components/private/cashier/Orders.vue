@@ -5,7 +5,7 @@
 
       <v-row class="mt-5">
         <v-col cols="12" md="9">
-          <v-card height="620" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
+          <v-card max-height="620" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
 
             <v-row>
                 <v-col v-for="order in orders" :key="order.id" cols="12" md="3">
@@ -15,8 +15,9 @@
                         <p class="orange--text">{{order.orderStatus}}</p>
                     </v-card>    
                 </v-col>
-              </v-row>
-            </v-card>
+            </v-row>
+          
+          </v-card>
         </v-col>
 
         <v-col col="12" md="3">
@@ -73,7 +74,7 @@
               <label><strong>Total:</strong></label>
               <span>R {{orderDetails.totalAmount}}</span>
           </div>
-          <hr class="mb-3 mt-1">
+          <!-- <hr class="mb-3 mt-1"> -->
 
           <p class="mt-3">{{orderDetails.description}}</p>
 
@@ -90,7 +91,7 @@
             {{ nextStatus }}
           </v-btn>
         </div>
-      </v-card>
+          </v-card>
 
         </v-col>
       </v-row>
