@@ -53,17 +53,17 @@ const apiService = {
     },
 
     // getStoreMenuByCategory
-    getStoreMenuByCategory(data) {
-        return httpService.get(`store-menu/category/${categoryid}`, data);
+    getStoreMenuByCategory(categoryid) {
+        return httpService.get(`store-menu/category/${categoryid}`);
     },
 
     // getOrderByCode
-    getOrderByCode(data) {
-        return httpService.get(`order-by-code/${storeid}/${ordercode}`, data);
+    getOrderByCode(storeid,ordercode) {
+        return httpService.get(`order-by-code/${storeid}/${ordercode}`);
     },
 
-    // getStoreMenuByCategory
-    getStoreMenuByCategory(data) {
+    // getStoreOrderStatistics
+    getStoreOrderStatistics(data) {
         return httpService.get(`order-statistics/${storeid}`, data);
     },
 
