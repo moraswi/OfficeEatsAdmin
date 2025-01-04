@@ -32,21 +32,21 @@
         <v-tab-item v-model="two">       
         <!-- Categories -->
             <v-select
-            :items="categories"
-            item-value="id"
-            item-text="name"
-            label="Categories"
-            outlined
-            class="mt-2"
+              :items="categories"
+              item-value="id"
+              item-text="name"
+              label="Categories"
+              outlined
+              class="mt-2"
             ></v-select>
 
         <!-- menuItemName -->
             <v-text-field
-            v-model="menuItemName"
-            class=""
-            outlined
-            label="Menu Name"
-            variant="outlined"
+              v-model="menuItemName"
+              class=""
+              outlined
+              label="Menu Name"
+              variant="outlined"
           ></v-text-field>
 
           <!-- menuDescription -->
@@ -76,7 +76,9 @@
             <v-tab-item v-model="three">  
 
                 <v-select
-                :items="items"
+                :items="storeMenu"
+                item-value="id"
+                item-text="name"
                 label="Menu"
                 outlined
                 class="mt-2"
@@ -161,13 +163,15 @@
       tab: null,
       dragging: false,
       files: [],
+      storeMenu:[],
       items: ['Drink', 'Box Meal', 'Starters'],
       categories:[]
     }),
   
     async created() {
       await Promise.all([
-      this.fetchMenuCategory()
+      this.fetchMenuCategory(),
+      this.fetchMenu(),
   
       ])
         .then(() => {
@@ -343,6 +347,19 @@
             }
           },
 
+        // fetchMenu
+          async fetchMenu() {
+            try {
+              this.overlay = true;
+
+              const response = await apiService.getStoreMenu(this.storeId);
+              this.storeMenu = response.data;
+            } catch (error) {
+              console.error('Error fetching store menu:', error);
+            } finally {
+              this.overlay = false;
+            }
+          },
     },
   };
   </script>
