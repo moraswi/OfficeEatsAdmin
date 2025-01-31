@@ -175,7 +175,6 @@
         const statusMapping = {
           Pending: "Accepted",
           Accepted: "Completed",
-          Accepted: " Assigned to Delivery",
           Decline: "Declined",
         };
 
