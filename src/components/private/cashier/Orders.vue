@@ -130,6 +130,7 @@
         const statusMapping = {
           Pending: "Accept",
           Accepted: "Complete",
+          Assigned_to_Delivery: "Assigned to Delivery"
         };
         return statusMapping[this.orderDetails.orderStatus] || null;
       },
@@ -174,6 +175,7 @@
         const statusMapping = {
           Pending: "Accepted",
           Accepted: "Completed",
+          Accepted: " Assigned to Delivery",
           Decline: "Declined",
         };
 
@@ -189,13 +191,7 @@
                   itemPrice: item.itemPrice,
                   foodName: item.foodName,
                 })),
-                // items: this.orderDetails.items.map((item, index) => ({
-                //   id: item.id,
-                //   foodId: item.foodId,
-                //   quantity: item.quantity,
-                //   itemPrice: item.itemPrice,
-                //   foodName: `${item.foodName} (item ${index})`, // Add an identifier
-                // })),
+
                 totalAmount: this.orderDetails.totalAmount,
                 deliveryAddress: this.orderDetails.deliveryAddress,
                 paymentMethod: this.orderDetails.paymentMethod,
@@ -215,17 +211,6 @@
     
           this.orderDetails.orderStatus = this.orderStatus;
           this.fetchOrders()
-      
-        // this.$swal({
-        //   toast: true,
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: "Successfully updated",
-        //   showConfirmButton: false,
-        //   timer: 3000,
-        //   timerProgressBar: true,
-        // });
-
       }
         
       } catch (error) {
