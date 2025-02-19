@@ -32,6 +32,7 @@
               depressed>decline
           </v-btn>
         </div>
+        
             <div v-if="orderDetails.items" style="overflow-y: auto; flex: 1;">
             
               <!-- order items -->
