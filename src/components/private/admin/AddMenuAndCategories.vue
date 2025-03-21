@@ -129,7 +129,7 @@
                         </li>
                     </ul>
 
-                <v-btn width="100%" class="py-6 white--text" color="red" @click="">Submit</v-btn>
+                <v-btn width="100%" class="py-6 white--text" color="red" >Submit</v-btn>
             </v-tab-item>
 
             </v-tabs-items>

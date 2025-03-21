@@ -1,5 +1,5 @@
 import axios from "axios";
-import store from "@/store";
+// import store from "@/store";
 // const apiKey = "bdK/XxbJ9ZwWMAF4gwKnIA9rpD8XE6Q4LxF2TjjfHuo=";
 
 const httpService = axios.create({

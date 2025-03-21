@@ -1,255 +1,291 @@
 <template>
-    <div class="px-md-4">
-      <TheHeader ></TheHeader>
+  <div class="px-md-4">
+    <TheHeader></TheHeader>
 
-      <v-layout class="mt-5">
-        <!-- Today -->
-        <v-card class="px-5 py-3" width="250">
-          <h2>Today</h2>
-          <label>12/02/2000</label>
-          <h3>150</h3>
+
+    <v-row class="mt-5">
+
+      <!-- orders -->
+      <v-col cols="12" md="9">
+        <v-card max-height="620" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
+
+          <v-row>
+              <v-col v-for="order in orders" :key="order.id" cols="12" md="3">
+                  <v-card @click="fetchOrdersDetails(order.id)" height="120" class=" pa-1">
+                      <h2>{{order.orderCode}}</h2>
+                      <h4>R {{ order.totalAmount + order.deliveryFee  }}</h4>
+                      <label> {{ order.recipientName  }}</label>
+                      <p class="orange--text">{{order.orderStatus}}</p>
+                  </v-card>    
+              </v-col>
+          </v-row>
+        
         </v-card>
+      </v-col>
 
-        <!-- Yesterday -->
-        <v-card class="pa-3 ml-3" width="250">
-          <h2>Yesterday</h2>
-          <label>11/02/2000</label>
-          <h3>150</h3>
-        </v-card>
-
-        <!-- Yesterday -->
-        <v-card class="pa-3 ml-3" width="250">
-          <h2>Last 7 Days</h2>
-          <label>12/02/2000 to 12/02/2000</label>
-          <h3>150</h3>
-        </v-card>
-
-          <!-- Yesterday -->
-          <v-card class="pa-3 ml-3" width="250">
-          <h2>Last 30 Days</h2>
-          <label>12/02/2000 to 12/02/2000</label>
-          <h3>150</h3>
-        </v-card>
-      </v-layout>
-
-   
-
-      <v-row class="mt-5">
-        <v-col cols="12" md="9">
-          <v-card height="500" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
-
-            <v-card height="87" class=" pa-1" width="350" flat>
-
-            <div class="d-flex">
-                      <v-text-field
-                          v-model="orderCode"
-                          class=""
-                          outlined
-                          label="Order Code"
-                          variant="outlined"
-                          width="150"
-                        ></v-text-field>
-
-                        <v-btn class="ml-3 red white--text">
-                          Search
-                        </v-btn>
-                      </div>
-
-            </v-card>
-                    <v-card height="87" class=" pa-1" width="350">
-                        <h2>1C45</h2>
-                        <h4>R 40.00</h4>
-                        <p class="orange--text">Pending</p>
-                    </v-card>
-                    
-            </v-card>
-        </v-col>
-
-        <v-col col="12" md="3">
-          <v-card height="500" class="pa-2 d-flex flex-column scrollable-card" style="overflow: auto;">
-
-              <h2>Streetwise 2</h2>
-              <div class="d-flex justify-space-between">
-                  <label><strong>Price:</strong></label>
-                  <span>R100</span>
-                </div>
-                <div class="d-flex justify-space-between">
-                  <label><strong>Quantity:</strong></label>
-                  <span>1</span>
-                </div>
-
-          <hr class="mb-3 mt-1">
-
-          <div class="d-flex justify-space-between">
-              <label><strong>Order:</strong></label>
-              <span>78SD5</span>
-          </div>
-         
-          <div class="d-flex justify-space-between">
-              <label><strong>Payment Method:</strong></label>
-              <span>Cash</span>
-          </div>
-
-          <div class="d-flex justify-space-between">
-              <label><strong>Status:</strong></label>
-              <span>Pending</span>
-          </div>
-
-          <div class="d-flex justify-space-between">
-              <label><strong>Date:</strong></label>
-              <span>2000/02/20</span>
-          </div>
+      <v-col col="12" md="3">
+        <v-card height="620" class="pa-2 d-flex flex-column scrollable-card" style="overflow: hidden;">
+      
+          <div v-if="orderDetails.items" style="overflow-y: auto; flex: 1;">
           
-          <div class="d-flex justify-space-between">
-              <label><strong>Total:</strong></label>
-              <span>R 150.00</span>
-          </div>
+            <!-- order items -->
+          <div v-for="orderItems in orderDetails.items" :key="orderItems.id">
+            <h3>{{ orderItems.foodName }}</h3>
+            <div class="d-flex justify-space-between">
+                <label><strong>Price:</strong></label>
+                <span>R {{ orderItems.totalPrice }}</span>
+            </div>
+            <div class="d-flex justify-space-between">
+                <label><strong>Quantity:</strong></label>
+                <span>{{ orderItems.quantity }}</span>
+            </div>
 
-          <p class="mt-3">Here it must be the description of the order if the customer entered a description when they ordered.</p>
+            <!-- Order Customazation -->
+          <h4 >Order Customazation</h4>
+          <ul>
+            <li>ss</li>
+            <li>ss</li>
+          </ul>
+
+        <hr class="mb-3 mt-1">
+      </div>
+
+      <!-- order details -->
+        <div class="d-flex justify-space-between">
+            <label><strong>Order:</strong></label>
+            <span>{{orderDetails.orderCode}}</span>
+        </div>
+       
+        <div class="d-flex justify-space-between">
+            <label><strong>Payment Method:</strong></label>
+            <span>{{orderDetails.paymentMethod}}</span>
+        </div>
+
+        <div class="d-flex justify-space-between">
+            <label><strong>Status:</strong></label>
+            <span>{{orderDetails.orderStatus}}</span>
+        </div>
+
+        <div class="d-flex justify-space-between">
+            <label><strong>Date:</strong></label>
+            <span>{{orderDetails.orderDate}}</span>
+        </div>
+        
+        <div class="d-flex justify-space-between">
+            <label><strong>Total:</strong></label>
+            <span>R {{orderDetails.totalAmount}}</span>
+        </div>
+
+        <p class="mt-3">{{orderDetails.description}}</p>
+
+    <div class="grey pa-2">
+      <h3>Delivery Address:</h3>
+                  <!-- RecipientName -->
+        <div class="d-flex justify-space-between">
+            <label><strong>RecipientName:</strong></label>
+            <span> {{orderDetails.recipientName}}</span>
+        </div>
+
+        <!-- RecipientMobileNumber -->
+        <!-- <div class="d-flex justify-space-between">
+            <label><strong>RecipientMobileNumber:</strong></label>
+            <span> {{orderDetails.recipientMobileNumber}}</span>
+        </div> -->
+
+                  <!-- Province -->
+        <div class="d-flex justify-space-between">
+            <label><strong>Province:</strong></label>
+            <span> {{orderDetails.province}}</span>
+        </div>
+
+        <!-- Town -->
+        <div class="d-flex justify-space-between">
+            <label><strong>Town:</strong></label>
+            <span> {{orderDetails.town}}</span>
+        </div>
+
+        <!-- Apartment -->
+        <div class="d-flex justify-space-between">
+            <label><strong>Apartment:</strong></label>
+            <span> {{orderDetails.apartment}}</span>
+        </div>
+
+        <!-- StreetAddress -->
+        <div class="d-flex justify-space-between">
+            <label><strong>StreetAddress:</strong></label>
+            <span> {{orderDetails.streetAddress}}</span>
+        </div>
+
+        <!-- PostalCode -->
+        <div class="d-flex justify-space-between">
+            <label><strong>PostalCode:</strong></label>
+            <span> {{orderDetails.postalCode}}</span>
+        </div>
 
 
-      </v-card>
 
-        </v-col>
-      </v-row>
-     
-      <v-overlay :value="overlay" z-index="1000">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
-    </div>
-  </template>
-  
-  <script>
-  import TheHeader from "@/components/shared/TheHeader.vue";
-  
-  export default {
-    name: "AdminOrdersPage",
-  
-    components: {
-      TheHeader,
+        <!-- Suburb -->
+        <div class="d-flex justify-space-between">
+            <label><strong>Suburb:</strong></label>
+            <span> {{orderDetails.suburb}}</span>
+        </div>
+      </div>
+        <!-- <hr class="mb-3 mt-1"> -->
+      </div>
+
+
+        </v-card>
+
+      </v-col>
+    </v-row>
+
+    <v-overlay :value="overlay" z-index="1000">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+  </div>
+</template>
+
+<script>
+import TheHeader from "@/components/shared/TheHeader.vue";
+import apiService from '@/http/apiService';
+
+export default {
+  name: "OrdersPage",
+
+  components: {
+    TheHeader,
+  },
+
+  data: () => ({
+    overlay: false,
+    orders: [],
+    orderDetails: {},
+    orderStatus: "",
+    storeId: 12,
+  }),
+
+  async created() {
+    this.fetchOrders();
+  },
+
+  computed: {
+    nextStatus() {
+      const statusMapping = {
+        Pending: "Accept",
+        Accepted: "Complete",
+        Assigned_to_Delivery: "Assigned to Delivery"
+      };
+      return statusMapping[this.orderDetails.orderStatus] || null;
     },
+  },
+
+
+  methods: {
+    // fetchOrders
+    async fetchOrders() {
+    try {
+      this.overlay = true;
+
+      const response = await apiService.getStoreOrder(this.storeId);
+      this.orders = response.data;
+    } catch (error) {
+      console.error('Error fetching store orders:', error);
+    } finally {
+      this.overlay = false;
+    }
+  },
+
+  // fetchOrdersDetails
+  async fetchOrdersDetails(orderId) {
+    try {
+      this.overlay = true;
+      console.log(orderId);
+
+      const response = await apiService.getStoreOrderById(orderId);
+      this.orderDetails = response.data;
+    } catch (error) {
+      console.error('Error fetching store orders:', error);
+    } finally {
+      this.overlay = false;
+    }
+  },
+ 
+  // updateOrders
+  async updateOrders(currentStatus) {
+    try {
+      this.overlay = true;
+      
+      const statusMapping = {
+        Pending: "Accepted",
+        Accepted: "Completed",
+        Decline: "Declined",
+      };
+
+      this.orderStatus = statusMapping[currentStatus] || currentStatus;
+
+      const data = {
+              id: this.orderDetails.id,
+              userId: this.orderDetails.userId,
+              items: this.orderDetails.items.map(item => ({
+                id: item.id,
+                foodId: item.foodId,
+                quantity: item.quantity,
+                itemPrice: item.itemPrice,
+                foodName: item.foodName,
+              })),
+
+              totalAmount: this.orderDetails.totalAmount,
+              deliveryAddress: this.orderDetails.deliveryAddress,
+              paymentMethod: this.orderDetails.paymentMethod,
+              orderStatus: this.orderStatus,
+              orderDate: this.orderDetails.orderDate,
+              shopId: this.orderDetails.shopId,
+              orderCode: this.orderDetails.orderCode,
+              storeName: this.orderDetails.storeName,
+              description: this.orderDetails.description,
+            };
+
+      const response = await apiService.updateOrder(data);
+
+      this.orderDetails.orderStatus = this.orderStatus;
+
+      if(response.status == 200){
   
-    data: () => ({
-      overlay: false,
-      tab: null,
-      dragging: false,
-      files: [],
-      items: ['Drink', 'Box Meal', 'Starters'],
-    }),
-  
-    async created() {
-      await Promise.all([
-  
-      ])
-        .then(() => {
-          this.overlay = false;
-        })
-        .catch(() => {
-          this.overlay = false;
-        });
-    },
-  
-    computed: {
-    },
-  
-    methods: {
-        // handle drop
-    handleDrop(event) {
-      const files = event.dataTransfer.files;
-      this.handleFiles({ target: { files } });
-      this.dragging = false;
+        this.orderDetails.orderStatus = this.orderStatus;
+        this.fetchOrders()
+    }
+      
+    } catch (error) {
+      console.error('Error fetching store orders:', error);
+    } finally {
+      this.overlay = false;
+    }
+  },
+
+  // getButtonColor
+  getButtonColor() {
+      const colorMapping = {
+        Accept: "orange",
+        Complete: "green",
+      };
+      return colorMapping[this.nextStatus] || "red";
     },
 
-    // remove file
-    removeFile(index) {
-      this.files.splice(index, 1);
-    },
+  },
+};
+</script>
 
-    // handle files
-    handleFiles(event) {
-      const files = Array.from(event.target.files);
-      if (files.length > 0) {
-        const file = files[0];
-        this.files = [{ file: file }];
-      }
-      event.target.value = ""; // clear the input
-    },
-
-    // upload document
-    async uploadMicroblinkCSVReq() {
-      if (!this.files.length) {
-        this.$swal.fire({
-          icon: "error",
-          title: "Please select a file to upload",
-          showConfirmButton: true,
-        });
-        return;
-      }
-
-      try {
-        this.overlay = true;
-
-        const formData = new FormData();
-        formData.append("csvupload", this.files[0].file);
-
-        // Hardcoding the GUID for now
-        // const hardcodedId = "6o9164c0-9fbb-42e2-af3a-485136d99785";
-        const randomId = crypto.randomUUID();
-        formData.append("id", randomId);
-        console.log(randomId);
-        const response = await this.$store.dispatch(
-          "jobs/uploadMicroblinkCSVReq",
-          formData
-        );
-
-        if (response.status === 200) {
-          this.$swal({
-            toast: true,
-            position: "top-end",
-            icon: "success",
-            title: "Successfully Uploaded Document!",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-          });
-        } else {
-          this.$swal({
-            toast: true,
-            position: "top-end",
-            icon: "error",
-            title: "Something went wrong!",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-        this.$swal({
-          toast: true,
-          position: "top-end",
-          icon: "error",
-          title: "Error occurred while uploading!",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
-      } finally {
-        this.overlay = false;
-      }
-    },
-    },
-  };
-  </script>
-  
 <style lang="scss" scoped>
+.image-rounded {
+  border-radius: 5px;
+}
+
 .scrollable-card {
-  overflow-y: auto;
-  scrollbar-width: none; /* For Firefox */
+overflow-y: auto;
+scrollbar-width: none;
 }
 
 .scrollable-card::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Edge */
+display: none;
 }
-
 </style>

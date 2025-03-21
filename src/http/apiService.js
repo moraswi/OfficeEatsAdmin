@@ -17,10 +17,6 @@ const apiService = {
         return httpService.post(`store-menu/images`, data);
     },
 
-    // addStoreMenuImages
-    addStoreMenuImages(data) {
-        return httpService.post(`store-menu/images`, data);
-    },
 
     // addStoreImage
     addStoreImage(data) {
@@ -64,7 +60,8 @@ const apiService = {
 
     // getStoreOrderStatistics
     getStoreOrderStatistics(data) {
-        return httpService.get(`order-statistics/${storeid}`, data);
+        console.log(data)
+        // return httpService.get(`order-statistics/${storeid}`, data);
     },
 
     // updateOrder

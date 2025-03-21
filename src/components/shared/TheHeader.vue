@@ -5,9 +5,9 @@
       <h2>Office Eats</h2>
       <v-spacer></v-spacer>
       <v-btn :to="{ name: 'Orders' }" class="ml-5" rounded depressed>Home</v-btn>
-      <v-btn :to="{ name: 'AddMenuAndCategories' }" class="ml-5" rounded depressed>Add Items</v-btn>
-      <v-btn :to="{ name: 'MenuAndCategories' }" class="ml-5" rounded depressed>Menu</v-btn>
-      <v-btn :to="{ name: 'AdminOrders' }" class="ml-5" rounded depressed>Manage Orders</v-btn>
+      <!-- <v-btn :to="{ name: 'AddMenuAndCategories' }" class="ml-5" rounded depressed>Add Items</v-btn> -->
+      <!-- <v-btn :to="{ name: 'MenuAndCategories' }" class="ml-5" rounded depressed>Menu</v-btn> -->
+      <v-btn :to="{ name: 'AdminOrders' }" class="ml-5" rounded depressed>Manage History</v-btn>
       <v-btn :to="{ name: 'home' }" class="ml-5 red white--text" rounded depressed>Log Out</v-btn>
 
     </v-layout>

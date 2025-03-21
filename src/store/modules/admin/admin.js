@@ -1,4 +1,4 @@
-import apiService from "@/http/apiService";
+// import apiService from "@/http/apiService";
 
 const admin = {
   namespaced: true,
@@ -10,8 +10,8 @@ const admin = {
   mutations: {
 
     // resetState
-    resetState(state) {
-    },
+    // resetState(state) {
+    // },
   },
 
   actions: {

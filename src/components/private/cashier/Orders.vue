@@ -4,14 +4,17 @@
 
 
       <v-row class="mt-5">
+
+        <!-- orders -->
         <v-col cols="12" md="9">
           <v-card max-height="620" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
 
             <v-row>
                 <v-col v-for="order in orders" :key="order.id" cols="12" md="3">
-                    <v-card @click="fetchOrdersDetails(order.id)" height="87" class=" pa-1">
+                    <v-card @click="fetchOrdersDetails(order.id)" height="120" class=" pa-1">
                         <h2>{{order.orderCode}}</h2>
-                        <h4>R {{ order.totalAmount }}</h4>
+                        <h4>R {{ order.totalAmount + order.deliveryFee  }}</h4>
+                        <label> {{ order.recipientName  }}</label>
                         <p class="orange--text">{{order.orderStatus}}</p>
                     </v-card>    
                 </v-col>
@@ -23,6 +26,7 @@
         <v-col col="12" md="3">
           <v-card height="620" class="pa-2 d-flex flex-column scrollable-card" style="overflow: hidden;">
 
+            <!-- decline button -->
         <div v-if="orderDetails.items" class="mb-1">
             <v-spacer></v-spacer> 
             <v-btn
@@ -37,7 +41,7 @@
             
               <!-- order items -->
             <div v-for="orderItems in orderDetails.items" :key="orderItems.id">
-              <h2>{{ orderItems.foodName }}</h2>
+              <h3>{{ orderItems.foodName }}</h3>
               <div class="d-flex justify-space-between">
                   <label><strong>Price:</strong></label>
                   <span>R {{ orderItems.totalPrice }}</span>
@@ -46,6 +50,13 @@
                   <label><strong>Quantity:</strong></label>
                   <span>{{ orderItems.quantity }}</span>
               </div>
+
+              <!-- Order Customazation -->
+            <h4 >Order Customazation</h4>
+            <ul>
+              <li>ss</li>
+              <li>ss</li>
+            </ul>
 
           <hr class="mb-3 mt-1">
         </div>
@@ -75,10 +86,62 @@
               <label><strong>Total:</strong></label>
               <span>R {{orderDetails.totalAmount}}</span>
           </div>
-          <!-- <hr class="mb-3 mt-1"> -->
 
           <p class="mt-3">{{orderDetails.description}}</p>
 
+      <div class="grey pa-2">
+        <h3>Delivery Address:</h3>
+                    <!-- RecipientName -->
+          <div class="d-flex justify-space-between">
+              <label><strong>RecipientName:</strong></label>
+              <span> {{orderDetails.recipientName}}</span>
+          </div>
+
+          <!-- RecipientMobileNumber -->
+          <!-- <div class="d-flex justify-space-between">
+              <label><strong>RecipientMobileNumber:</strong></label>
+              <span> {{orderDetails.recipientMobileNumber}}</span>
+          </div> -->
+
+                    <!-- Province -->
+          <div class="d-flex justify-space-between">
+              <label><strong>Province:</strong></label>
+              <span> {{orderDetails.province}}</span>
+          </div>
+
+          <!-- Town -->
+          <div class="d-flex justify-space-between">
+              <label><strong>Town:</strong></label>
+              <span> {{orderDetails.town}}</span>
+          </div>
+
+          <!-- Apartment -->
+          <div class="d-flex justify-space-between">
+              <label><strong>Apartment:</strong></label>
+              <span> {{orderDetails.apartment}}</span>
+          </div>
+
+          <!-- StreetAddress -->
+          <div class="d-flex justify-space-between">
+              <label><strong>StreetAddress:</strong></label>
+              <span> {{orderDetails.streetAddress}}</span>
+          </div>
+
+          <!-- PostalCode -->
+          <div class="d-flex justify-space-between">
+              <label><strong>PostalCode:</strong></label>
+              <span> {{orderDetails.postalCode}}</span>
+          </div>
+
+
+
+          <!-- Suburb -->
+          <div class="d-flex justify-space-between">
+              <label><strong>Suburb:</strong></label>
+              <span> {{orderDetails.suburb}}</span>
+          </div>
+        </div>
+          <!-- <hr class="mb-3 mt-1"> -->
         </div>
 
         <div v-if="orderDetails.items">
@@ -119,7 +182,7 @@
       orders: [],
       orderDetails: {},
       orderStatus: "",
-      storeId: 1,
+      storeId: 12,
     }),
   
     async created() {
