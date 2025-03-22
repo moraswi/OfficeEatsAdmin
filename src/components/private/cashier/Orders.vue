@@ -12,11 +12,11 @@
             <v-row>
                 <v-col v-for="order in orders" :key="order.id" cols="12" md="3">
                     <v-card @click="fetchOrdersDetails(order.id)" height="120" class=" pa-1">
-                        <h2>{{order.orderCode}}</h2>
+                        <h3>{{order.orderCode}}</h3>
                         <h4>R {{ order.totalAmount + order.deliveryFee  }}</h4>
                         <label> {{ order.recipientName  }}</label>
                         <p class="orange--text">{{order.orderStatus}}</p>
-                    </v-card>    
+                    </v-card>
                 </v-col>
             </v-row>
           
@@ -149,36 +149,36 @@
         </div>
 
         
-        <div v-if="showChatSection" class="chat-section">
-        <v-card class="chat-card" style="position: fixed; bottom: 70px; right: 20px; width: 300px;">
-          <v-card-title>Chat</v-card-title>
-          <v-card-text style="max-height: 300px; overflow-y: auto;">
-            <div v-for="(message, index) in messages" :key="index" :class="message.sender === 'You' ? 'sender' : 'receiver'">
-              <div class="message">
+          <div v-if="showChatSection" class="chat-section">
+          <v-card class="chat-card" style="position: fixed; bottom: 70px; right: 20px; width: 300px;">
+            <v-card-title>Chat</v-card-title>
+            <v-card-text style="max-height: 300px; overflow-y: auto;">
+              <div v-for="(message, index) in messages" :key="index" :class="message.sender === 'You' ? 'sender' : 'receiver'">
+                <div class="message">
 
-                <p>{{ message.text }}</p>
+                  <p>{{ message.text }}</p>
+                </div>
               </div>
-            </div>
-          </v-card-text>
-          <v-card-actions>
-            <v-textarea v-model="newMessage" label="Type a message" rows="3" auto-grow></v-textarea>
-            <v-btn @click="sendMessage" color="primary">Send</v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-textarea v-model="newMessage" label="Type a message" rows="3" auto-grow></v-textarea>
+              <v-btn @click="sendMessage" color="primary">Send</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
 
-      <!-- Floating Button for Chat -->
+          <!-- Floating Button for Chat -->
 
-      <v-btn
-      v-if="orderDetails.items"
-        fab
-        color="primary"
-        class="floating-btn"
-        @click="toggleChatSection"
-        style="position: fixed; bottom: 20px; right: 20px;"
-      >
-        <v-icon>mdi-chat</v-icon>
-      </v-btn>
+          <v-btn
+            v-if="orderDetails.items"
+              fab
+              color="primary"
+              class="floating-btn"
+              @click="toggleChatSection"
+              style="position: fixed; bottom: 20px; right: 20px;"
+            >
+              <v-icon>mdi-chat</v-icon>
+            </v-btn>
           </v-card>
 
         </v-col>
