@@ -149,6 +149,36 @@
         </div>
 
         
+        <div v-if="showChatSection" class="chat-section">
+        <v-card class="chat-card" style="position: fixed; bottom: 70px; right: 20px; width: 300px;">
+          <v-card-title>Chat</v-card-title>
+          <v-card-text style="max-height: 300px; overflow-y: auto;">
+            <div v-for="(message, index) in messages" :key="index" :class="message.sender === 'You' ? 'sender' : 'receiver'">
+              <div class="message">
+
+                <p>{{ message.text }}</p>
+              </div>
+            </div>
+          </v-card-text>
+          <v-card-actions>
+            <v-textarea v-model="newMessage" label="Type a message" rows="3" auto-grow></v-textarea>
+            <v-btn @click="sendMessage" color="primary">Send</v-btn>
+          </v-card-actions>
+        </v-card>
+      </div>
+
+      <!-- Floating Button for Chat -->
+
+      <v-btn
+      v-if="orderDetails.items"
+        fab
+        color="primary"
+        class="floating-btn"
+        @click="toggleChatSection"
+        style="position: fixed; bottom: 20px; right: 20px;"
+      >
+        <v-icon>mdi-chat</v-icon>
+      </v-btn>
           </v-card>
 
         </v-col>
@@ -179,6 +209,13 @@
       orderDetails: {},
       orderStatus: "",
       storeId: 12,
+      showChatSection: false,
+      newMessage: '',
+      messages: [
+        { sender: 'You', text: 'Hello, how can I help you?' },
+        { sender: 'Receiver', text: 'I have a question about my order.' },
+      ], 
+
     }),
   
     async created() {
@@ -288,6 +325,30 @@
         return colorMapping[this.nextStatus] || "red";
       },
 
+      toggleChatSection() {
+      // Toggle the visibility of the chat section
+      this.showChatSection = !this.showChatSection;
+    },
+    sendMessage() {
+      if (this.newMessage.trim() !== '') {
+        // Add the new message to the messages array
+        this.messages.push({ sender: 'You', text: this.newMessage });
+
+        // Clear the input field after sending
+        this.newMessage = '';
+
+        // Optionally scroll to the latest message
+        this.$nextTick(() => {
+          const chatContainer = this.$el.querySelector('.chat-card');
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
+      }
+    },
+    addOrderStatusReq(orderId) {
+      // Your existing method to update the order status
+      console.log("Order status updated for order ID:", orderId);
+    },
+
     },
   };
   </script>
@@ -304,5 +365,24 @@
 
 .scrollable-card::-webkit-scrollbar {
   display: none;
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.chat-section {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  width: 300px;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.chat-card {
+  width: 100%;
 }
 </style>
