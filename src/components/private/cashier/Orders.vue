@@ -31,7 +31,7 @@
             <v-spacer></v-spacer> 
             <v-btn
               v-if="nextStatus"
-              @click="updateOrders('Decline')" 
+              @click="addOrderStatusReq(orderDetails.id)"
               class="red white--text" 
               depressed>decline
           </v-btn>
@@ -79,7 +79,7 @@
 
           <div class="d-flex justify-space-between">
               <label><strong>Date:</strong></label>
-              <span>{{orderDetails.orderDate}}</span>
+              <span> <FormattedDate :date="orderDetails.orderDate" /> </span>
           </div>
           
           <div class="d-flex justify-space-between">
@@ -96,12 +96,6 @@
               <label><strong>RecipientName:</strong></label>
               <span> {{orderDetails.recipientName}}</span>
           </div>
-
-          <!-- RecipientMobileNumber -->
-          <!-- <div class="d-flex justify-space-between">
-              <label><strong>RecipientMobileNumber:</strong></label>
-              <span> {{orderDetails.recipientMobileNumber}}</span>
-          </div> -->
 
                     <!-- Province -->
           <div class="d-flex justify-space-between">
@@ -133,8 +127,6 @@
               <span> {{orderDetails.postalCode}}</span>
           </div>
 
-
-
           <!-- Suburb -->
           <div class="d-flex justify-space-between">
               <label><strong>Suburb:</strong></label>
@@ -148,13 +140,15 @@
           <v-btn
             v-if="nextStatus"
             :disabled="overlay"
-            @click="updateOrders(orderDetails.orderStatus)"
+            @click="addOrderStatusReq(orderDetails.id)"
             :class="`${getButtonColor()} white--text mt-1`"
             block
           >
             {{ nextStatus }}
           </v-btn>
         </div>
+
+        
           </v-card>
 
         </v-col>
@@ -169,12 +163,14 @@
   <script>
   import TheHeader from "@/components/shared/TheHeader.vue";
   import apiService from '@/http/apiService';
+  import FormattedDate from "@/components/shared/AppShared.vue";
 
   export default {
     name: "OrdersPage",
   
     components: {
       TheHeader,
+      FormattedDate
     },
   
     data: () => ({
@@ -220,7 +216,6 @@
     async fetchOrdersDetails(orderId) {
       try {
         this.overlay = true;
-        console.log(orderId);
 
         const response = await apiService.getStoreOrderById(orderId);
         this.orderDetails = response.data;
@@ -230,58 +225,59 @@
         this.overlay = false;
       }
     },
-   
-    // updateOrders
-    async updateOrders(currentStatus) {
-      try {
-        this.overlay = true;
-        
-        const statusMapping = {
-          Pending: "Accepted",
-          Accepted: "Completed",
-          Decline: "Declined",
-        };
 
-        this.orderStatus = statusMapping[currentStatus] || currentStatus;
+       // addOrderStatusReq
+       async addOrderStatusReq(orderId) {
+            try {
+              this.overlay = true;
 
-        const data = {
-                id: this.orderDetails.id,
-                userId: this.orderDetails.userId,
-                items: this.orderDetails.items.map(item => ({
-                  id: item.id,
-                  foodId: item.foodId,
-                  quantity: item.quantity,
-                  itemPrice: item.itemPrice,
-                  foodName: item.foodName,
-                })),
+              // Find the order by ID
+              let order = this.orders.find(o => o.id === orderId);
+              if (!order) return console.error("Order not found");
 
-                totalAmount: this.orderDetails.totalAmount,
-                deliveryAddress: this.orderDetails.deliveryAddress,
-                paymentMethod: this.orderDetails.paymentMethod,
-                orderStatus: this.orderStatus,
-                orderDate: this.orderDetails.orderDate,
-                shopId: this.orderDetails.shopId,
-                orderCode: this.orderDetails.orderCode,
-                storeName: this.orderDetails.storeName,
-                description: this.orderDetails.description,
+              // Get latest status
+              let latestStatus = order.orderStatusHistory.length
+                ? order.orderStatusHistory[order.orderStatusHistory.length - 1].status
+                : order.orderStatus;
+
+              const statusFlow = ["Pending", "Accepted", "Preparing for Delivery", "Out for Delivery", "Completed"];
+              
+              // Find the next status in the sequence
+              let currentIndex = statusFlow.indexOf(latestStatus);
+              if (currentIndex === -1 || currentIndex === statusFlow.length - 1) {
+                console.warn("No further status updates possible.");
+                return;
+              }
+
+              let nextStatus = statusFlow[currentIndex + 1];
+
+              // Prepare data for API request
+              var data = {
+                orderId: orderId,
+                status: nextStatus,
+                updatedBy: 0, // Change this to the actual user ID if needed
               };
 
-        const response = await apiService.updateOrder(data);
+              // Send API request
+              const response = await apiService.addOrderStatus(data);
+              console.log(response);
 
-        this.orderDetails.orderStatus = this.orderStatus;
+              // Update the local order status (Optimistic UI update)
+              order.orderStatusHistory.push({
+                orderId: orderId,
+                status: nextStatus,
+                updatedBy: 0,
+                updatedAt: new Date().toISOString(),
+              });
 
-        if(response.status == 200){
-    
-          this.orderDetails.orderStatus = this.orderStatus;
-          this.fetchOrders()
-      }
-        
-      } catch (error) {
-        console.error('Error fetching store orders:', error);
-      } finally {
-        this.overlay = false;
-      }
-    },
+            } catch (error) {
+              console.error("Error updating order status:", error);
+            } finally {
+              this.overlay = false;
+            }
+          },
+
+
 
     // getButtonColor
     getButtonColor() {

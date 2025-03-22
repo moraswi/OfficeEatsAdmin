@@ -28,6 +28,11 @@ const apiService = {
         return httpService.post(`menu-category`, data);
     },
 
+    // addOrderStatus
+    addOrderStatus(data) {
+        return httpService.post(`status`, data);
+    },
+
     // getMenuCategory
     getMenuCategory(storeid) {
         return httpService.get(`menu-category/${storeid}`);
