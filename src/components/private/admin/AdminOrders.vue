@@ -9,17 +9,36 @@
       <v-col cols="12" md="9">
         <v-card max-height="620" class="d-flex flex-column pa-1 scrollable-card" style="overflow-y: auto;" flat >
 
-          <v-row>
-              <v-col v-for="order in orders" :key="order.id" cols="12" md="3">
-                  <v-card @click="fetchOrdersDetails(order.id)" height="120" class=" pa-1">
-                      <h2>{{order.orderCode}}</h2>
-                      <h4>R {{ order.totalAmount + order.deliveryFee  }}</h4>
-                      <label> {{ order.recipientName  }}</label>
-                      <p class="orange--text">{{order.orderStatus}}</p>
-                  </v-card>    
-              </v-col>
-          </v-row>
-        
+          <v-data-table
+            :headers="headers"
+            :items="processedOrders"
+            item-key="date"
+            items-per-page="13"
+            class="mt-7"
+          >
+
+     <!-- date -->
+      <template v-slot:[`item.orderDate`]="{ item }">
+        <FormattedDate :date="item.orderDate" />
+      </template>
+
+      <template v-slot:[`item.orderStatus`]="{ item }">
+        <v-chip
+          :color="item.latestStatus === 'Pending' ? 'orange' : 'green'"
+          text-color="white"
+        >
+          {{ item.latestStatus }}
+        </v-chip>
+      </template>
+
+
+      <template  v-slot:[`item.action`]="{ item }">
+        <v-icon small class="mr-2" color="orange" @click="fetchOrdersDetails(item.id)">
+          mdi-eye
+        </v-icon>
+      </template> 
+    </v-data-table>
+
         </v-card>
       </v-col>
 
@@ -68,7 +87,7 @@
 
         <div class="d-flex justify-space-between">
             <label><strong>Date:</strong></label>
-            <span>{{orderDetails.orderDate}}</span>
+            <FormattedDate :date="orderDetails.orderDate" />
         </div>
         
         <div class="d-flex justify-space-between">
@@ -86,11 +105,6 @@
             <span> {{orderDetails.recipientName}}</span>
         </div>
 
-        <!-- RecipientMobileNumber -->
-        <!-- <div class="d-flex justify-space-between">
-            <label><strong>RecipientMobileNumber:</strong></label>
-            <span> {{orderDetails.recipientMobileNumber}}</span>
-        </div> -->
 
                   <!-- Province -->
         <div class="d-flex justify-space-between">
@@ -148,12 +162,13 @@
 <script>
 import TheHeader from "@/components/shared/TheHeader.vue";
 import apiService from '@/http/apiService';
-
+import FormattedDate from "@/components/shared/AppShared.vue";
 export default {
   name: "OrdersPage",
 
   components: {
     TheHeader,
+    FormattedDate,
   },
 
   data: () => ({
@@ -162,6 +177,21 @@ export default {
     orderDetails: {},
     orderStatus: "",
     storeId: 12,
+
+    headers: [
+      { text: "Order", align: "start", value: "orderCode" },
+      { text: "Total Amount", value: "totalAmount" },
+      { text: "Date", value: "orderDate" },
+      { text: "Town", value: "town" },
+      { text: "Province", value: "province" },
+      { text: "Apartment", value: "apartment" },
+      { text: "Street", value: "streetAddress" },
+      { text: "Status", value: "orderStatus" },
+
+      { text: "Suburb", value: "suburb" },
+
+      { text: "Action", value: "action" },
+    ],
   }),
 
   async created() {
@@ -169,16 +199,19 @@ export default {
   },
 
   computed: {
-    nextStatus() {
-      const statusMapping = {
-        Pending: "Accept",
-        Accepted: "Complete",
-        Assigned_to_Delivery: "Assigned to Delivery"
-      };
-      return statusMapping[this.orderDetails.orderStatus] || null;
-    },
-  },
+  processedOrders() {
+    return this.orders.map(order => {
+      const latestStatus = order.orderStatusHistory.length
+        ? order.orderStatusHistory[order.orderStatusHistory.length - 1].status
+        : order.orderStatus; // Fallback to orderStatus if history is empty
 
+      return {
+        ...order,
+        latestStatus
+      };
+    }) .sort((a, b) => b.id - a.id);
+  }
+},
 
   methods: {
     // fetchOrders
@@ -262,14 +295,7 @@ export default {
     }
   },
 
-  // getButtonColor
-  getButtonColor() {
-      const colorMapping = {
-        Accept: "orange",
-        Complete: "green",
-      };
-      return colorMapping[this.nextStatus] || "red";
-    },
+
 
   },
 };
