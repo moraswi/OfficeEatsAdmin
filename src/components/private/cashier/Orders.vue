@@ -15,7 +15,7 @@
                         <h3>{{order.orderCode}}</h3>
                         <h4>R {{ order.totalAmount + order.deliveryFee  }}</h4>
                         <label> {{ order.recipientName  }}</label>
-                        <p class="orange--text">{{order.orderStatus}}</p>
+                        <p class="orange--text">{{currentStatus(order)}}</p>
                     </v-card>
                 </v-col>
             </v-row>
@@ -133,7 +133,7 @@
               <span> {{orderDetails.suburb}}</span>
           </div>
         </div>
-          <!-- <hr class="mb-3 mt-1"> -->
+
         </div>
 
         <div v-if="orderDetails.items">
@@ -141,7 +141,7 @@
             v-if="nextStatus"
             :disabled="overlay"
             @click="addOrderStatusReq(orderDetails.id)"
-            :class="`${getButtonColor()} white--text mt-1`"
+            class="orange white--text mt-1"
             block
           >
             {{ nextStatus }}
@@ -167,7 +167,7 @@
           </v-card>
         </div>
 
-          <!-- Floating Button for Chat -->
+        <!-- Floating Button for Chat -->
 
           <v-btn
             v-if="orderDetails.items"
@@ -209,6 +209,7 @@
       orderDetails: {},
       orderStatus: "",
       storeId: 12,
+      userId:1010101,
       showChatSection: false,
       newMessage: '',
       messages: [
@@ -223,30 +224,58 @@
     },
   
     computed: {
+
+      // nextStatus
       nextStatus() {
-        const statusMapping = {
-          Pending: "Accept",
-          Accepted: "Complete",
-          Assigned_to_Delivery: "Assigned to Delivery"
-        };
-        return statusMapping[this.orderDetails.orderStatus] || null;
-      },
+          if (!this.orderDetails || !this.orderDetails.orderStatusHistory) return null;
+
+          const statusFlow = ["Pending", "Accepted", "Preparing for Delivery", "Out for Delivery", "Completed"];
+
+          // Find the latest status by the highest ID
+          let latestStatusEntry = this.orderDetails.orderStatusHistory.reduce((latest, current) => {
+            return current.id > latest.id ? current : latest;
+          }, { id: -1 }); // Initial value with an invalid ID
+
+          let latestStatus = latestStatusEntry.status || this.orderDetails.orderStatus;
+
+          // Find the next status in the sequence
+          let currentIndex = statusFlow.indexOf(latestStatus);
+          if (currentIndex === -1 || currentIndex === statusFlow.length - 1) {
+            return null; // No further statuses
+          }
+
+          // Return the next status
+          return statusFlow[currentIndex + 1];
+        },
     },
 
   
     methods: {
+
+      // currentStatus
+      currentStatus(order) {
+          if (!order || !order.orderStatusHistory) return null;
+
+          // Find the latest status by the highest ID
+          let latestStatusEntry = order.orderStatusHistory.reduce((latest, current) => {
+            return current.id > latest.id ? current : latest;
+          }, order.orderStatusHistory[0] || null); // Use first entry if exists, otherwise null
+
+          return latestStatusEntry ? latestStatusEntry.status : order.orderStatus;
+        },
+
       // fetchOrders
       async fetchOrders() {
-      try {
-        this.overlay = true;
+        try {
+          this.overlay = true;
 
-        const response = await apiService.getStoreOrder(this.storeId);
-        this.orders = response.data;
-      } catch (error) {
-        console.error('Error fetching store orders:', error);
-      } finally {
-        this.overlay = false;
-      }
+            const response = await apiService.getStoreOrder(this.storeId);
+            this.orders = response.data;
+          } catch (error) {
+            console.error('Error fetching store orders:', error);
+          } finally {
+            this.overlay = false;
+        }
     },
 
     // fetchOrdersDetails
@@ -263,19 +292,21 @@
       }
     },
 
-       // addOrderStatusReq
-       async addOrderStatusReq(orderId) {
+     // addOrderStatusReq
+    async addOrderStatusReq(orderId) {
             try {
-              this.overlay = true;
 
+              this.overlay = true;
+       
               // Find the order by ID
               let order = this.orders.find(o => o.id === orderId);
               if (!order) return console.error("Order not found");
 
-              // Get latest status
-              let latestStatus = order.orderStatusHistory.length
-                ? order.orderStatusHistory[order.orderStatusHistory.length - 1].status
-                : order.orderStatus;
+              let latestStatusEntry = order.orderStatusHistory.reduce((latest, current) => {
+                    return current.id > latest.id ? current : latest;
+                  }, { id: -1, status: order.orderStatus });
+                  
+                  let latestStatus = latestStatusEntry.status;
 
               const statusFlow = ["Pending", "Accepted", "Preparing for Delivery", "Out for Delivery", "Completed"];
               
@@ -292,20 +323,26 @@
               var data = {
                 orderId: orderId,
                 status: nextStatus,
-                updatedBy: 0, // Change this to the actual user ID if needed
+                updatedBy: this.userId,
               };
 
               // Send API request
-              const response = await apiService.addOrderStatus(data);
-              console.log(response);
+              await apiService.addOrderStatus(data);
 
               // Update the local order status (Optimistic UI update)
-              order.orderStatusHistory.push({
-                orderId: orderId,
-                status: nextStatus,
-                updatedBy: 0,
-                updatedAt: new Date().toISOString(),
-              });
+              this.$set(order, "orderStatusHistory", [
+                      ...order.orderStatusHistory,
+                      {
+                        id: latestStatusEntry.id + 1, // Simulate next ID (ensure unique ID)
+                        orderId: orderId,
+                        status: nextStatus,
+                        updatedBy: this.userId,
+                        updatedAt: new Date().toISOString(),
+                      },
+                    ]);
+
+            // Force Vue to update UI
+            this.$forceUpdate();
 
             } catch (error) {
               console.error("Error updating order status:", error);
@@ -315,20 +352,12 @@
           },
 
 
-
-    // getButtonColor
-    getButtonColor() {
-        const colorMapping = {
-          Accept: "orange",
-          Complete: "green",
-        };
-        return colorMapping[this.nextStatus] || "red";
+       // toggleChatSection
+      toggleChatSection() {
+        this.showChatSection = !this.showChatSection;
       },
 
-      toggleChatSection() {
-      // Toggle the visibility of the chat section
-      this.showChatSection = !this.showChatSection;
-    },
+    // sendMessage
     sendMessage() {
       if (this.newMessage.trim() !== '') {
         // Add the new message to the messages array
@@ -344,10 +373,7 @@
         });
       }
     },
-    addOrderStatusReq(orderId) {
-      // Your existing method to update the order status
-      console.log("Order status updated for order ID:", orderId);
-    },
+
 
     },
   };
