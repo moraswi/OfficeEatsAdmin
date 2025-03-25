@@ -154,14 +154,15 @@
             <v-card-title>Chat</v-card-title>
             <v-card-text style="max-height: 300px; overflow-y: auto;">
               <div v-for="(message, index) in messages" :key="index">
-                <div >
+                <div :class="{'text-left': userId !== message.userId, 'text-right': userId === message.userId}">
+
                   <p>{{ message.message }}</p>
                 </div>
               </div>
             </v-card-text>
             <v-card-actions>
               <v-textarea v-model="newMessage" label="Type a message" rows="3" auto-grow></v-textarea>
-              <v-btn @click="sendMessage" color="primary">Send</v-btn>
+              <v-btn @click="sendMessage(orderDetails.id)" color="primary">Send</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -208,12 +209,10 @@
       orderDetails: {},
       orderStatus: "",
       storeId: 12,
-      userId:1010101,
+      userId:2,
       showChatSection: false,
       newMessage: '',
       messages: [
-        { sender: 'You', text: 'Hello, how can I help you?' },
-        { sender: 'Receiver', text: 'I have a question about my order.' },
       ], 
 
     }),
@@ -359,20 +358,20 @@
       },
 
     // sendMessage
-    sendMessage() {
-      if (this.newMessage.trim() !== '') {
-        // Add the new message to the messages array
-        this.messages.push({ sender: 'You', text: this.newMessage });
+    async sendMessage(orderId) {
+      
+         var data = {
+          "storeId": this.storeId,
+          "orderId": orderId,
+          "userId": this.userId,
+          "message": this.newMessage,
+          };
 
-        // Clear the input field after sending
-        this.newMessage = '';
+          // Send API request
+          await apiService.addMessage(data);
 
-        // Optionally scroll to the latest message
-        this.$nextTick(() => {
-          const chatContainer = this.$el.querySelector('.chat-card');
-          chatContainer.scrollTop = chatContainer.scrollHeight;
-        });
-      }
+          this.getMessage(orderId)
+      
     },
 
 
@@ -383,10 +382,6 @@
 
             const response = await apiService.getMessage(orderId)
             this.messages = response.data;
-
-            console.log("this.messages")
-            console.log(orderId)
-            console.log(this.messages)
           } catch (error) {
             console.error('Error get Message:', error);
           } finally {
