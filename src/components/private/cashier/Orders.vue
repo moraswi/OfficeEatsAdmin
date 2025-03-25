@@ -153,10 +153,9 @@
           <v-card class="chat-card" style="position: fixed; bottom: 70px; right: 20px; width: 300px;">
             <v-card-title>Chat</v-card-title>
             <v-card-text style="max-height: 300px; overflow-y: auto;">
-              <div v-for="(message, index) in messages" :key="index" :class="message.sender === 'You' ? 'sender' : 'receiver'">
-                <div class="message">
-
-                  <p>{{ message.text }}</p>
+              <div v-for="(message, index) in messages" :key="index">
+                <div >
+                  <p>{{ message.message }}</p>
                 </div>
               </div>
             </v-card-text>
@@ -285,6 +284,8 @@
 
         const response = await apiService.getStoreOrderById(orderId);
         this.orderDetails = response.data;
+
+        this.getMessage(orderId)
       } catch (error) {
         console.error('Error fetching store orders:', error);
       } finally {
@@ -374,6 +375,24 @@
       }
     },
 
+
+    // getMessage
+    async getMessage(orderId) {
+        try {
+          this.overlay = true;
+
+            const response = await apiService.getMessage(orderId)
+            this.messages = response.data;
+
+            console.log("this.messages")
+            console.log(orderId)
+            console.log(this.messages)
+          } catch (error) {
+            console.error('Error get Message:', error);
+          } finally {
+            this.overlay = false;
+        }
+    },
 
     },
   };

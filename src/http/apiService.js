@@ -33,6 +33,16 @@ const apiService = {
         return httpService.post(`status`, data);
     },
 
+    // addMessage
+    addMessage(data) {
+        return httpService.post(`message`, data);
+     },
+    
+    // getMessage
+    getMessage(orderId) {
+        return httpService.get(`message/${orderId}`);
+    },
+
     // getMenuCategory
     getMenuCategory(storeid) {
         return httpService.get(`menu-category/${storeid}`);
