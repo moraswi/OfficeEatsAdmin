@@ -25,18 +25,18 @@ const authentication = {
     async logInReq({ commit }, data) {
         try {
           const response = await apiService.logIn(data);
-      
-          commit("setLogin", response.data);
+   
+          commit("setLogIn", response.data);
           return response;
         } catch (error) {
-          console.log("setLogin", error);
+          console.log("setLogIn", error);
         }
       },
   },
 
   getters: {
     getUserDetails(state){
-        return state.login
+        return state.logIn
     }
   },
 };

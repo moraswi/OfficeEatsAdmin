@@ -55,10 +55,6 @@ import router from "@/router";
       },
 
       methods: {
-        // logIn
-        async logInOld() {
-            router.push({ name: "MenuAndCategories" });
-        },
 
         // logIn
         async logIn() {
@@ -72,7 +68,7 @@ import router from "@/router";
             
             const response = await this.$store.dispatch('authentication/logInReq',data);
 
-            if(response.status == 200){
+            if(response.status == 200 && response.data.storeId > 0){
 
                     router.push({ name: "Orders" });
                         
@@ -99,7 +95,17 @@ import router from "@/router";
             }
                         
           } catch (error) {
-            console.log("logIn: ",error)
+            
+                this.$swal({
+                  toast: true,
+                  position: "top-end",
+                  icon: "Something went wrong",
+                  title: "enter correct details",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+              });
+            
           }finally{
             this.overlay = false;
 

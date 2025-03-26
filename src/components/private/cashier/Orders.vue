@@ -208,7 +208,7 @@
       orders: [],
       orderDetails: {},
       orderStatus: "",
-      storeId: 12,
+      storeId: 0,
       userId:2,
       showChatSection: false,
       newMessage: '',
@@ -218,7 +218,12 @@
     }),
   
     async created() {
-      this.fetchOrders();
+      var userDetails= await this.$store.getters["authentication/getUserDetails"];
+      this.storeId = userDetails.storeId
+      // console.log('this.storeId');
+      // console.log(userDetails);
+      // console.log(this.storeId);
+      await this.fetchOrders();
     },
   
     computed: {
